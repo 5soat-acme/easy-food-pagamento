@@ -6,7 +6,6 @@ namespace EF.Pagamentos.Infra.Data.AWS
     public interface IAwsDatasource : IDisposable
     {
         public AmazonDynamoDBClient dynamoClient { get; }
-        public Task<Document> LerItem(string tableName, string id);
 
         public Task<Document> AdicionarItem(string tableName, Document document);
 

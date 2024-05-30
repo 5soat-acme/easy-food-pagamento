@@ -1,4 +1,5 @@
 ﻿using Amazon.DynamoDBv2.DocumentModel;
+using Amazon.DynamoDBv2.Model;
 using EF.Infra.Commons.EventBus;
 using EF.Pagamentos.Domain.Models;
 using EF.Pagamentos.Domain.Repository;
@@ -21,18 +22,35 @@ public sealed class PagamentoRepository : IPagamentoRepository
 
     public async Task<Pagamento?> ObterPorId(Guid id)
     {
-        var document = await _dbContext.LerItem(tableName, id.ToString());
-        if (document == null) return null;
+        QueryRequest request = new QueryRequest
+        {
+            TableName = tableName,
+            KeyConditionExpression = "#Id = :val",
+            ExpressionAttributeNames = new Dictionary<string, string>
+            {
+                { "#Id", "Id" }
+            },
+            ExpressionAttributeValues = new Dictionary<string, AttributeValue>
+            {
+                { ":val", new AttributeValue { S = id.ToString() } }
+            }
+        };
 
-        var pagamento = new Pagamento(id: Guid.Parse(document["Id"]), 
-            pedidoId: Guid.Parse(document["PedidoId"]), 
-            tipo: Tipo.Pix, 
-            dataCriacao: DateTime.Now, 
-            dataAtualizacao: DateTime.Now, 
-            valor: 0, 
-            status: Status.Pendente);
+        QueryResponse response = await _dbContext.dynamoClient.QueryAsync(request);
+        if (response.Items != null && response.Items.Count > 0)
+        {
+            var document = Document.FromAttributeMap(response.Items[0]);
+            var pagamento = new Pagamento(id: document["Id"].AsGuid(),
+                                        pedidoId: document["PedidoId"].AsGuid(),
+                                        tipo: (Tipo)document["Tipo"].AsInt(),
+                                        dataCriacao: document["DataCriacao"].AsDateTime(),
+                                        dataAtualizacao: document.Contains("DataAtualizacao") ? document["DataAtualizacao"].AsDateTime() : null,
+                                        valor: document["Valor"].AsDecimal(),
+                                        status: (Status)document["Status"].AsInt());
+            return pagamento;
+        }
 
-        return pagamento;
+        return null;
     }
 
     public async Task<Pagamento?> ObterPorPedidoId(Guid pedidoId)
@@ -45,14 +63,18 @@ public sealed class PagamentoRepository : IPagamentoRepository
             Filter = filter
         };
         Search search = table.Scan(config);
-        foreach (Document document in await search.GetNextSetAsync())
+        var listaDocument = await search.GetNextSetAsync();
+        if(listaDocument != null && listaDocument.Count > 0)
         {
-            // Processar cada item retornado
-            Console.WriteLine("Item encontrado:");
-            foreach (var attribute in document.GetAttributeNames())
-            {
-                Console.WriteLine($"{attribute}: {document[attribute]}");
-            }
+            var document = listaDocument[0];
+            var pagamento = new Pagamento(id: document["Id"].AsGuid(),
+                                        pedidoId: document["PedidoId"].AsGuid(),
+                                        tipo: (Tipo)document["Tipo"].AsInt(),
+                                        dataCriacao: document["DataCriacao"].AsDateTime(),
+                                        dataAtualizacao: document.Contains("DataAtualizacao") ? document["DataAtualizacao"].AsDateTime() : null,
+                                        valor: document["Valor"].AsDecimal(),
+                                        status: (Status)document["Status"].AsInt());
+            return pagamento;
         }
 
         return null;
@@ -82,7 +104,7 @@ public sealed class PagamentoRepository : IPagamentoRepository
             ["PedidoId"] = pagamento.PedidoId,
             ["Tipo"] = (int)pagamento.Tipo,
             ["DataCriacao"] = pagamento.DataCriacao,
-            ["DataCriacao"] = pagamento.DataAtualizacao,
+            ["DataAtualizacao"] = pagamento.DataAtualizacao,
             ["Valor"] = pagamento.Valor,
             ["Status"] = (int)pagamento.Status
         };
@@ -119,48 +141,3 @@ public sealed class PagamentoRepository : IPagamentoRepository
         }
     }
 }
-
-/*public sealed class PagamentoRepository : IPagamentoRepository
-{
-    private readonly PagamentoDbContext _dbContext;
-
-    public PagamentoRepository(PagamentoDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
-    public IUnitOfWork UnitOfWork => _dbContext;
-
-    public async Task<Pagamento?> ObterPorId(Guid id)
-    {
-        return await _dbContext.Pagamentos
-            .Include(i => i.Transacoes)
-            .FirstOrDefaultAsync(p => p.Id == id);
-    }
-
-    public async Task<Pagamento?> ObterPorPedidoId(Guid pedidoId)
-    {
-        return await _dbContext.Pagamentos
-            .FirstOrDefaultAsync(p => p.PedidoId == pedidoId);
-    }
-
-    public void Criar(Pagamento pagamento)
-    {
-        _dbContext.Pagamentos.Add(pagamento);
-    }
-
-    public void Atualizar(Pagamento pagamento)
-    {
-        _dbContext.Pagamentos.Update(pagamento);
-    }
-
-    public void AdicionarTransacao(Transacao transacao)
-    {
-        _dbContext.Transacoes.Add(transacao);
-    }
-
-    public void Dispose()
-    {
-        _dbContext.Dispose();
-    }
-}*/

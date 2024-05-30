@@ -69,10 +69,12 @@ public class Pagamento : Entity, IAggregateRoot
     public void Autorizar()
     {
         Status = Status.Autorizado;
+        DataAtualizacao = DateTime.Now;
     }
 
     public void Recusar()
     {
         Status = Status.Recusado;
+        DataAtualizacao = DateTime.Now;
     }
 }

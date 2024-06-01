@@ -8,12 +8,12 @@ namespace EF.Api.Commons.Config;
 
 public static class ApiConfig
 {
-    public static IServiceCollection AddApiConfig(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddApiConfig(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env)
     {
         services.AddControllers()
             .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerConfig();
+        services.AddSwaggerConfig(env);
 
         services.AddEventBusConfig();
 

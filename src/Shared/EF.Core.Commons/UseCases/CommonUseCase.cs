@@ -11,10 +11,4 @@ public abstract class CommonUseCase
     {
         ValidationResult.AddError(message, propertyName);
     }
-
-    protected async Task<ValidationResult> PersistData(IUnitOfWork unitOfWork)
-    {
-        if (!await unitOfWork.Commit()) AddError("Ocorreu um erro ao persistir os dados");
-        return ValidationResult;
-    }
 }

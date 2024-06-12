@@ -7,10 +7,6 @@ public class Pagamento : Entity, IAggregateRoot
 {
     private List<Transacao> _transacoes;
 
-    private Pagamento()
-    {
-    }
-
     public Pagamento(Guid pedidoId, Tipo tipo, decimal valor)
     {
         if (!ValidarPedido(pedidoId)) throw new DomainException("Um pagamento deve estar associado a um pedido");

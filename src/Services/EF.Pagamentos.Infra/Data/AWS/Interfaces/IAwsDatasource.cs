@@ -1,7 +1,7 @@
 ﻿using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DocumentModel;
 
-namespace EF.Pagamentos.Infra.Data.AWS
+namespace EF.Pagamentos.Infra.Data.AWS.Interfaces
 {
     public interface IAwsDatasource : IDisposable
     {

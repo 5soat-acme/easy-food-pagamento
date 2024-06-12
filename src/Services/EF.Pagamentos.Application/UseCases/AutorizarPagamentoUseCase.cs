@@ -23,7 +23,7 @@ public class AutorizarPagamentoUseCase : CommonUseCase, IAutorizarPagamentoUseCa
 
         if (pagamento is null)
         {
-            ValidationResult.AddError("Pagamento inválido", "Pagamento");
+            AddError("Pagamento inválido", "Pagamento");
             return OperationResult.Failure(ValidationResult);
         }
 
@@ -45,8 +45,6 @@ public class AutorizarPagamentoUseCase : CommonUseCase, IAutorizarPagamentoUseCa
         }
 
         await _pagamentoRepository.Atualizar(pagamento);
-
-        if (!ValidationResult.IsValid) return OperationResult.Failure(ValidationResult);
 
         return OperationResult.Success();
     }

@@ -1,9 +1,8 @@
-﻿using EF.Core.Commons.Repository;
-using EF.Pagamentos.Domain.Models;
+﻿using EF.Pagamentos.Domain.Models;
 
 namespace EF.Pagamentos.Domain.Repository;
 
-public interface IPagamentoRepository
+public interface IPagamentoRepository : IDisposable
 {
     Task<Pagamento?> ObterPorId(Guid id);
     Task<Pagamento?> ObterPorPedidoId(Guid pedidoId);

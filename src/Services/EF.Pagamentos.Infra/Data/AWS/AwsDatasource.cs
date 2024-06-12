@@ -3,6 +3,7 @@ using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DocumentModel;
 using Amazon.Runtime;
 using EF.Infra.Commons.Messageria.AWS.Config;
+using EF.Pagamentos.Infra.Data.AWS.Interfaces;
 using Microsoft.Extensions.Options;
 
 namespace EF.Pagamentos.Infra.Data.AWS

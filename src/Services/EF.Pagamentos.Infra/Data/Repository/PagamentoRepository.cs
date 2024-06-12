@@ -3,7 +3,7 @@ using Amazon.DynamoDBv2.Model;
 using EF.Infra.Commons.EventBus;
 using EF.Pagamentos.Domain.Models;
 using EF.Pagamentos.Domain.Repository;
-using EF.Pagamentos.Infra.Data.AWS;
+using EF.Pagamentos.Infra.Data.AWS.Interfaces;
 
 namespace EF.Pagamentos.Infra.Data.Repository;
 
@@ -11,13 +11,15 @@ public sealed class PagamentoRepository : IPagamentoRepository
 {
     private readonly IAwsDatasource _dbContext;
     private readonly IEventBus _bus;
+    private readonly ITableLoader _tableLoader;
     private readonly string tableName = "Pagamentos";
     private readonly string tableNameTransacoes = "Transacoes";
 
-    public PagamentoRepository(IAwsDatasource dbContext, IEventBus bus)
+    public PagamentoRepository(IAwsDatasource dbContext, IEventBus bus, ITableLoader tableLoader)
     {
         _dbContext = dbContext;
         _bus = bus;
+        _tableLoader = tableLoader;
     }
 
     public async Task<Pagamento?> ObterPorId(Guid id)
@@ -55,14 +57,14 @@ public sealed class PagamentoRepository : IPagamentoRepository
 
     public async Task<Pagamento?> ObterPorPedidoId(Guid pedidoId)
     {
-        Table table = Table.LoadTable(_dbContext.dynamoClient, tableName);
+        var table = _tableLoader.LoadTable(_dbContext.dynamoClient, tableName);
         ScanFilter filter = new ScanFilter();
         filter.AddCondition("PedidoId", ScanOperator.Equal, pedidoId.ToString());
         ScanOperationConfig config = new ScanOperationConfig
         {
             Filter = filter
         };
-        Search search = table.Scan(config);
+        var search = table.Scan(config);
         var listaDocument = await search.GetNextSetAsync();
         if(listaDocument != null && listaDocument.Count > 0)
         {

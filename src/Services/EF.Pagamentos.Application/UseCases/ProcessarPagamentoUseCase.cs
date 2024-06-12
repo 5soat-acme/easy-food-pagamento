@@ -21,7 +21,8 @@ public class ProcessarPagamentoUseCase : CommonUseCase, IProcessarPagamentoUseCa
 
     public async Task<OperationResult> Handle(ProcessarPagamentoDto processarPagamentoDto)
     {
-        var tipoPagamento = Enum.Parse<Tipo>(processarPagamentoDto.TipoPagamento);
+        Tipo tipoPagamento;
+        Enum.TryParse<Tipo>(processarPagamentoDto.TipoPagamento, out tipoPagamento);
 
         var pagamento = new Pagamento(processarPagamentoDto.PedidoId, tipoPagamento, processarPagamentoDto.ValorTotal);
 
@@ -29,8 +30,6 @@ public class ProcessarPagamentoUseCase : CommonUseCase, IProcessarPagamentoUseCa
         await pagamentoService.AutorizarPagamento(pagamento);
 
         await _pagamentoRepository.Criar(pagamento);
-
-        if (!ValidationResult.IsValid) return OperationResult<Guid>.Failure(ValidationResult.GetErrorMessages());
 
         return OperationResult.Success();
     }

@@ -4,6 +4,7 @@ using EF.Pagamentos.Application.UseCases.Interfaces;
 using EF.Pagamentos.Domain.Repository;
 using EF.Pagamentos.Infra;
 using EF.Pagamentos.Infra.Data.AWS;
+using EF.Pagamentos.Infra.Data.AWS.Interfaces;
 using EF.Pagamentos.Infra.Data.Repository;
 using EF.Pagamentos.Infra.Services;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<PagamentoCartaoCreditoService>();
 
         // Infra - Data 
+        services.AddScoped<ITableLoader, TableLoader>();
         services.AddScoped<IAwsDatasource, AwsDatasource>();
         services.AddScoped<IPagamentoRepository, PagamentoRepository>();        
     }

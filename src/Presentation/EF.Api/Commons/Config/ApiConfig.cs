@@ -2,7 +2,6 @@ using System.Text.Json.Serialization;
 using EF.Api.Commons.Extensions;
 using EF.Api.Contexts.Pagamentos.Config;
 using EF.WebApi.Commons.Identity;
-using EF.WebApi.Commons.Users;
 
 namespace EF.Api.Commons.Config;
 
@@ -20,7 +19,6 @@ public static class ApiConfig
         services.RegisterServicesPagamentos(configuration);
 
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        services.AddScoped<IUserApp, UserApp>();
         services.AddJwtConfiguration(configuration);
         services.AddMessageriaConfig(configuration);
 

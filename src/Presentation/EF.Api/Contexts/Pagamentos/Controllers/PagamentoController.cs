@@ -8,7 +8,6 @@ using EF.Pagamentos.Domain.Models;
 using EF.WebApi.Commons.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 
 namespace EF.Api.Contexts.Pagamentos.Controllers;
 

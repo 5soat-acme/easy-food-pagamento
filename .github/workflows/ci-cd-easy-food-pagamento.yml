@@ -12,6 +12,52 @@ on:
       - 'src/**'
 
 jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESSKEY: ${{ SECRETS.AWS_ACCESS_KEY_ID }}
+      AWS_SECRETKEY: ${{ SECRETS.AWS_SECRET_ACCESS_KEY }}
+      AWS_SESSIONTOKEN: ${{ SECRETS.AWS_SESSION_TOKEN }}
+      AWS_REGION: "us-east-1"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.x'
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Test with Coverage
+        run: |
+          dotnet test --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          reportgenerator -reports:**/coverage.opencover.xml -targetdir:coveragereport -reporttypes:Html
+
+      - name: SonarCloud Scan
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          dotnet tool install --global dotnet-sonarscanner && \
+          export PATH="$PATH:/home/runner/.dotnet/tools" && \
+          dotnet sonarscanner begin \
+              /k:"5soat-acme_easy-food-preparoentrega" \
+              /o:"5soat-acme" \
+              /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
+              /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" \
+              /d:sonar.host.url="https://sonarcloud.io" \
+              /d:sonar.exclusions="src/**/Migrations/**,test/**,src/Shared/**"  && \
+          dotnet build  && \
+          dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+
   build:
     name: Build
     runs-on: ubuntu-latest

@@ -53,9 +53,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EF.Test.Utils", "test\Utils
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pagamentos", "Pagamentos", "{04114C13-9EE4-4614-856E-4A22FF021580}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EF.Pagamentos.Infra.Test", "test\Unit\EF.Pagamentos.Infra.Test\EF.Pagamentos.Infra.Test.csproj", "{0EAA8E56-0C9C-4731-8688-8AB72D78BBA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EF.Pagamentos.Infra.Test", "test\Unit\EF.Pagamentos.Infra.Test\EF.Pagamentos.Infra.Test.csproj", "{0EAA8E56-0C9C-4731-8688-8AB72D78BBA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EF.Pagamentos.Application.Test", "test\Unit\EF.Pagamentos.Application.Test\EF.Pagamentos.Application.Test.csproj", "{8F72EC36-1A4C-4CFB-B609-8B5302F3A170}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EF.Pagamentos.Application.Test", "test\Unit\EF.Pagamentos.Application.Test\EF.Pagamentos.Application.Test.csproj", "{8F72EC36-1A4C-4CFB-B609-8B5302F3A170}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presenter", "Presenter", "{3F28782B-5E18-4855-A930-742DB267C522}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EF.Api.Test", "test\Unit\EF.Api.Test\EF.Api.Test.csproj", "{E4CC89E1-E87F-420D-A467-DD66CCB72A5D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,6 +111,10 @@ Global
 		{8F72EC36-1A4C-4CFB-B609-8B5302F3A170}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F72EC36-1A4C-4CFB-B609-8B5302F3A170}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F72EC36-1A4C-4CFB-B609-8B5302F3A170}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4CC89E1-E87F-420D-A467-DD66CCB72A5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4CC89E1-E87F-420D-A467-DD66CCB72A5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4CC89E1-E87F-420D-A467-DD66CCB72A5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4CC89E1-E87F-420D-A467-DD66CCB72A5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -133,6 +141,8 @@ Global
 		{04114C13-9EE4-4614-856E-4A22FF021580} = {EC224B23-0922-44A6-BAD6-225EFA714ECC}
 		{0EAA8E56-0C9C-4731-8688-8AB72D78BBA1} = {04114C13-9EE4-4614-856E-4A22FF021580}
 		{8F72EC36-1A4C-4CFB-B609-8B5302F3A170} = {04114C13-9EE4-4614-856E-4A22FF021580}
+		{3F28782B-5E18-4855-A930-742DB267C522} = {183070F7-0A64-444B-B3E3-D30EC130F796}
+		{E4CC89E1-E87F-420D-A467-DD66CCB72A5D} = {3F28782B-5E18-4855-A930-742DB267C522}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4EF48A17-2E1D-4950-95B3-8C7206DD4E91}

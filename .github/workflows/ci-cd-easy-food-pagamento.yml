@@ -49,7 +49,7 @@ jobs:
           dotnet tool install --global dotnet-sonarscanner && \
           export PATH="$PATH:/home/runner/.dotnet/tools" && \
           dotnet sonarscanner begin \
-              /k:"5soat-acme_easy-food-preparoentrega" \
+              /k:"5soat-acme_easy-food-pagamento" \
               /o:"5soat-acme" \
               /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
               /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" \

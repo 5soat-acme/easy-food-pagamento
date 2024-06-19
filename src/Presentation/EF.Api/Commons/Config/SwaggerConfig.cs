@@ -20,7 +20,7 @@ public static class SwaggerConfig
             //     Description = "easy-food"
             // });
 
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Easy Food", Version = "v1" });
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Easy Food - Pagamento", Version = "v1" });
 
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {

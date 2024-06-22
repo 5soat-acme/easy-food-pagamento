@@ -15,7 +15,6 @@ public class Pagamento : Entity, IAggregateRoot
         PedidoId = pedidoId;
         Tipo = tipo;
         Valor = valor;
-        DataCriacao = DateTime.Now;
         _transacoes = new List<Transacao>();
         Status = Models.Status.Pendente;
     }

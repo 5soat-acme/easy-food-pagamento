@@ -1,6 +1,4 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Text;
-using EF.Api.Commons.Extensions;
+﻿using EF.Api.Commons.Extensions;
 using EF.Pagamentos.Application.DTOs.Requests;
 using EF.Pagamentos.Application.DTOs.Responses;
 using EF.Pagamentos.Application.UseCases.Interfaces;

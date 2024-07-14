@@ -4,11 +4,13 @@ using EF.Pagamentos.Application.DTOs.Responses;
 using EF.Pagamentos.Application.UseCases.Interfaces;
 using EF.Pagamentos.Domain.Models;
 using EF.WebApi.Commons.Controllers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
 namespace EF.Api.Contexts.Pagamentos.Controllers;
 
+[Authorize]
 [Route("api/pagamentos")]
 public class PagamentoController : CustomControllerBase
 {
@@ -53,26 +55,10 @@ public class PagamentoController : CustomControllerBase
     }
 
     /// <summary>
-    ///     Processa o pagamento. O pagamento é gerado e o sistema aguarda a autorização do mesmo.
-    /// </summary>
-    /// <response code="204">Pagamento processado.</response>
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [Produces("application/json")]
-    [HttpPost]
-    public async Task<IActionResult> ProcessarPagamento(ProcessarPagamentoDto processarPagamentoDto)
-    {
-        var result = await _processarPagamentoUseCase.Handle(processarPagamentoDto);
-
-        if (!result.IsValid) return Respond(result.GetErrorMessages());
-
-        return Respond();
-    }
-
-    /// <summary>
     ///     Webhook para resposta da autorização do pagamento por parte do provedor de pagamento.
     /// </summary>
     /// <response code="204">Resposta da solicitação de autorização enviada.</response>
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [Produces("application/json")]

@@ -13,6 +13,7 @@ public static class EventBusConfig
 
         // Pagamentos
         services.AddScoped<IEventHandler<PagamentoAutorizadoEvent>, PagamentoEventHandler>();
+        services.AddScoped<IEventHandler<PagamentoRecusadoEvent>, PagamentoEventHandler>();
 
         return services;
     }
@@ -25,6 +26,9 @@ public static class EventBusConfig
         var bus = services.GetRequiredService<IEventBus>();
         
         services.GetRequiredService<IEnumerable<IEventHandler<PagamentoAutorizadoEvent>>>().ToList()
+            .ForEach(e => bus.Subscribe(e));
+
+        services.GetRequiredService<IEnumerable<IEventHandler<PagamentoRecusadoEvent>>>().ToList()
             .ForEach(e => bus.Subscribe(e));
 
         return app;

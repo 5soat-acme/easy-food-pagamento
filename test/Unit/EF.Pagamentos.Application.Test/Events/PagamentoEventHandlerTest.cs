@@ -37,4 +37,20 @@ public class PagamentoEventHandlerTest
         // Assert
         _producerMock.Verify(x => x.SendMessageAsync(QueuesNames.PagamentoAutorizado.ToString(), pagamentoAutorizadoEventJson), Times.Once);
     }
+
+    [Fact]
+    public async Task DeveExecutarEventoPagamentoRecusado()
+    {
+        // Arrange
+        var pagamentoRecusadoEvent = _fixture.Create<PagamentoRecusadoEvent>();
+        var pagamentoRecusadoEventJson = JsonSerializer.Serialize(pagamentoRecusadoEvent);
+
+        _producerMock.Setup(x => x.SendMessageAsync(QueuesNames.PagamentoRecusado.ToString(), pagamentoRecusadoEventJson));
+
+        // Act
+        await _pagamentoEventHandler.Handle(pagamentoRecusadoEvent);
+
+        // Assert
+        _producerMock.Verify(x => x.SendMessageAsync(QueuesNames.PagamentoRecusado.ToString(), pagamentoRecusadoEventJson), Times.Once);
+    }
 }

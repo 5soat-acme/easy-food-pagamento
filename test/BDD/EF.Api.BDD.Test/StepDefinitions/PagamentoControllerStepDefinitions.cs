@@ -48,17 +48,6 @@ public class PagamentoControllerStepDefinitions
         _result = await _client.GetAsync($"/api/pagamentos?pedidoId={pedidoId}");
     }
 
-    [When(@"eu solicitar o processamento de pagamento de id ""(.*)""")]
-    public async Task QuandoEuSolicitarOProcessamentoDePagamento(Guid pagamentoId)
-    {
-        var processarPagamentoDto = _fixture.Build<ProcessarPagamentoDto>().With(x => x.TipoPagamento, Tipo.Pix.ToString()).Create();
-
-        _factory.PagamentoRepositoryMock.Setup(x => x.Criar(It.IsAny<Pagamento>()));
-
-        var content = new StringContent(JsonSerializer.Serialize(processarPagamentoDto), Encoding.UTF8, "application/json");
-        _result = await _client.PostAsync($"/api/pagamentos", content);
-    }
-
     [When(@"o webhook de autorização de pagamento for acionado")]
     public async Task QuandoOWebhookDeAutorizacaoDePagamentoForAcionado()
     {

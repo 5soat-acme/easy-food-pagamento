@@ -42,6 +42,11 @@ public class AutorizarPagamentoUseCase : CommonUseCase, IAutorizarPagamentoUseCa
         else
         {
             pagamento.Recusar();
+            pagamento.AddEvent(new PagamentoRecusadoEvent
+            {
+                AggregateId = pagamento.Id,
+                PedidoId = pagamento.PedidoId
+            });
         }
 
         await _pagamentoRepository.Atualizar(pagamento);

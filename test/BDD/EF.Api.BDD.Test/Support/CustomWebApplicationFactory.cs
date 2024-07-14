@@ -2,7 +2,9 @@
 using AutoFixture.AutoMoq;
 using EF.Infra.Commons.Messageria;
 using EF.Infra.Commons.Messageria.AWS;
+using EF.Pagamentos.Application.Events.Consumers;
 using EF.Pagamentos.Domain.Repository;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,6 +28,8 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
     {
         builder.ConfigureServices(async services => 
         {
+            ConfigureAuth(services);
+            RemoveHostedServices(services);
             RemoveProducers(services);
             ConfigureMocks(services);
         });        
@@ -33,9 +37,34 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
         return base.CreateHost(builder);
     }
 
+    private void ConfigureAuth(IServiceCollection services)
+    {
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = "Test";
+            options.DefaultChallengeScheme = "Test";
+        })
+            .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("Test", options => { });
+    }
+
     private void ConfigureMocks(IServiceCollection services)
     {
         services.AddScoped(_ => PagamentoRepositoryMock.Object);
+    }
+
+    private void RemoveHostedServices(IServiceCollection services)
+    {
+        var hostedServiceTypes = new[]
+        {
+            typeof(PagamentoCriadoConsumer)
+        };
+
+        var descriptors = services.Where(d => hostedServiceTypes.Contains(d.ImplementationType)).ToList();
+
+        foreach (var descriptor in descriptors)
+        {
+            services.Remove(descriptor);
+        }
     }
 
     private void RemoveProducers(IServiceCollection services)

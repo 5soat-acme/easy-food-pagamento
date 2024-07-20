@@ -28,7 +28,7 @@ public class PagamentoCriadoConsumer : BackgroundService
         {
             try
             {
-                var response = await _consumer.ReceiveMessagesAsync(QueuesNames.PagamentoCriado.ToString());
+                var response = await _consumer.ReceiveMessagesAsync(QueuesNames.PedidoCriado.ToString());
 
                 foreach (var message in response.receiveMessageResponse.Messages)
                 {

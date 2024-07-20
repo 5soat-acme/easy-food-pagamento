@@ -60,7 +60,7 @@ public class PagamentoCriadoConsumerTest
             queueUrl = "queue-url"
         };
 
-        _consumerMock.Setup(x => x.ReceiveMessagesAsync(QueuesNames.PagamentoCriado.ToString())).ReturnsAsync(response);
+        _consumerMock.Setup(x => x.ReceiveMessagesAsync(QueuesNames.PedidoCriado.ToString())).ReturnsAsync(response);
         _processarPagamentoUseCase.Setup(x => x.Handle(It.IsAny<ProcessarPagamentoDto>())).ReturnsAsync(It.IsAny<OperationResult<Guid>>());
 
         // Act

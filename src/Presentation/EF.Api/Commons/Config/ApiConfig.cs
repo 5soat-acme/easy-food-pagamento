@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using EF.Api.Commons.Extensions;
 using EF.Api.Contexts.Pagamentos.Config;
+using EF.Pagamentos.Application.Events.Consumers;
 using EF.WebApi.Commons.Identity;
 
 namespace EF.Api.Commons.Config;
@@ -21,6 +22,7 @@ public static class ApiConfig
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddJwtConfiguration(configuration);
         services.AddMessageriaConfig(configuration);
+        services.AddHostedService<PagamentoCriadoConsumer>();
 
         services.Configure<PagamentoAutorizacaoWebHookSettings>(configuration.GetSection("PagamentoAutorizacaoWebHook"));
         
@@ -33,6 +35,12 @@ public static class ApiConfig
         app.UseSwaggerConfig();
 
         app.UseHttpsRedirection();
+
+        app.Use(async (context, next) =>
+        {
+            context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
+            await next();
+        });
 
         app.MapControllers();
 

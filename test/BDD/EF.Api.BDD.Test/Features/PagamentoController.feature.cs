@@ -148,14 +148,14 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Processando um novo pagamento")]
+        [Xunit.SkippableFactAttribute(DisplayName="Recebendo autorização via webhook de pagamento")]
         [Xunit.TraitAttribute("FeatureTitle", "PagamentoController")]
-        [Xunit.TraitAttribute("Description", "Processando um novo pagamento")]
-        public void ProcessandoUmNovoPagamento()
+        [Xunit.TraitAttribute("Description", "Recebendo autorização via webhook de pagamento")]
+        public void RecebendoAutorizacaoViaWebhookDePagamento()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Processando um novo pagamento", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Recebendo autorização via webhook de pagamento", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 17
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -170,41 +170,9 @@ this.ScenarioInitialize(scenarioInfo);
     testRunner.Given("que o serviço pagamento está configurado", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 19
-    testRunner.When("eu solicitar o processamento de pagamento de id \"f694f3a3-2622-45ea-b168-f573f161" +
-                        "65ea\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 20
-    testRunner.Then("a resposta deve ser 204", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="Recebendo autorização via webhook de pagamento")]
-        [Xunit.TraitAttribute("FeatureTitle", "PagamentoController")]
-        [Xunit.TraitAttribute("Description", "Recebendo autorização via webhook de pagamento")]
-        public void RecebendoAutorizacaoViaWebhookDePagamento()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Recebendo autorização via webhook de pagamento", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 22
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 23
-    testRunner.Given("que o serviço pagamento está configurado", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 24
     testRunner.When("o webhook de autorização de pagamento for acionado", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 25
+#line 20
     testRunner.Then("a resposta deve ser 204", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

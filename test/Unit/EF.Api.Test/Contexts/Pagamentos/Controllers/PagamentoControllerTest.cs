@@ -77,46 +77,6 @@ public class PagamentoControllerTest
     }
 
     [Fact]
-    public async Task DeveRetornarOk_QuandoProcessarPagamento()
-    {
-        // Arrange
-        var operationResult = OperationResult.Success();
-        var processarPagamentoDto = _fixture.Create<ProcessarPagamentoDto>();
-
-        _processarPagamentoUseCaseMock.Setup(x => x.Handle(processarPagamentoDto)).ReturnsAsync(operationResult);
-
-        // Act
-        var resultado = await _pagamentoController.ProcessarPagamento(processarPagamentoDto);
-
-        // Assert
-        var okResult = resultado as OkObjectResult;
-        okResult.Should().NotBeNull();
-        okResult!.StatusCode.Should().Be(StatusCodes.Status200OK);
-    }
-
-    [Fact]
-    public async Task DeveRetornarBadRequest_QuandoFalharAoProcessarPagamento()
-    {
-        // Arrange
-        var processarPagamentoDto = _fixture.Create<ProcessarPagamentoDto>();
-        var operationResult = OperationResult.Failure("Erro");
-
-        _processarPagamentoUseCaseMock.Setup(x => x.Handle(processarPagamentoDto)).ReturnsAsync(operationResult);
-
-        // Act
-        var resultado = await _pagamentoController.ProcessarPagamento(processarPagamentoDto);
-
-        // Assert
-        var badRequestResult = resultado as BadRequestObjectResult;
-        badRequestResult.Should().NotBeNull();
-        badRequestResult!.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
-        badRequestResult.Value.Should().BeEquivalentTo(new ValidationProblemDetails(new Dictionary<string, string[]>
-        {
-            { "Messages", operationResult.GetErrorMessages().ToArray() }
-        }));
-    }
-
-    [Fact]
     public async Task DeveRetornarOk_QuandoAutorizarPagamento()
     {
         // Arrange

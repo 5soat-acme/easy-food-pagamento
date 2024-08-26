@@ -1,8 +1,10 @@
-﻿using EF.Pagamentos.Application.UseCases.Interfaces;
+﻿using EF.Pagamentos.Application.Events.Consumers;
+using EF.Pagamentos.Application.UseCases.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System.Net;
 
 namespace EF.Api.Test;
@@ -33,7 +35,11 @@ public class ProgramTest : IClassFixture<WebApplicationFactory<Program>>
         using (var scope = services.CreateScope())
         {
             scope.ServiceProvider.GetService<IProcessarPagamentoUseCase>().Should().NotBeNull();
+
         }
+
+        // Verify hosted services
+        services.GetServices<IHostedService>().Any(s => s.GetType() == typeof(PagamentoCriadoConsumer)).Should().BeTrue();
     }
 
     [Fact]
